@@ -328,6 +328,7 @@ def main():
             array_size = int(input("Enter an array size: "))
             # array = generate_random_integer_set(array_size)
             test_multiple_algorithms(array_size)
+            print()
         if user_choice == 3:
             print("Goodbye")
             break
