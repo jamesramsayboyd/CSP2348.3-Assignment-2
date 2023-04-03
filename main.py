@@ -22,7 +22,7 @@ def selection_sort(arr):
         arr[i], arr[minimum] = arr[minimum], arr[i]
         copy_counter += 2
     timer_end = time.perf_counter_ns()
-    return comparison_counter, copy_counter, timer_end - timer_start
+    return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
 def insertion_sort(arr):
@@ -268,17 +268,19 @@ def bi_directional_bubble_sort(arr):
     return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def test_single_algorithm(choice, array_size):
-    array = generate_random_integer_set(array_size)
+def test_single_algorithm(choice, array):
     if choice == 1:
         data = selection_sort(array)
-        print_test_results("Selection Sort", data)
+        print_test_results("Selection Sort", len(array), data)
     elif choice == 2:
-        insertion_sort(array)
+        data = insertion_sort(array)
+        print_test_results("Insertion Sort", len(array), data)
     elif choice == 3:
-        merge_sort(array)
+        data = merge_sort(array)
+        print_test_results("Merge Sort", len(array), data)
     elif choice == 4:
-        quick_sort(array, 0, len(array) - 1)
+        data = quick_sort(array, 0, len(array) - 1)
+        print_test_results("Quick Sort", len(array), data)
     elif choice == 5:
         heap_sort(array)
     elif choice == 6:
@@ -296,39 +298,37 @@ def test_single_algorithm(choice, array_size):
     else:
         print("Error: Invalid input")
 
+def test_multiple_algorithms(input_size):
+    array = generate_random_integer_set(input_size)
+    print("Algorithm Name  |  Array Size  |  No. of Comparisons  |  Run Time (in ms.)")
+    for i in range(1, 12):
+            test_single_algorithm(i, array)
 
-def print_test_results(algorithm, result_set):
-    print(algorithm)
-    print("No. of comparison operations: ", result_set[0])
-    print("No. of copy operations: ", result_set[1])
-    print("Time taken: ", result_set[2], "(ms)")
+
+def print_test_results(algorithm, array_size, result_set):
+    print(algorithm, array_size, result_set[0], result_set[2])
 
 
 def main():
-    print("1. Test an individual sorting algorithm")
-    print("2. Test multiple sorting algorithms")
-    print("3. Exit")
-    user_choice = int(input("Enter choice: "))
+    while True:
+        print("1. Test an individual sorting algorithm\n2. Test multiple sorting algorithms\n3. Exit")
+        user_choice = int(input("Enter choice: "))
 
-    test_single_algorithm(user_choice, 20)
-
-    # array = generate_random_integer_set(2000)
-    #
-    # print()
-    # print("Unsorted array:")
-    # print(array)
-    # print()
-    # print()
-    #
-    # heap_sort(array)
-    # #result = bubble_sort(array)
-    # print("Sorted array:")
-    # print(array)
-    # print()
-    # #print("Number of comparisons:", results[0])
-    # #print("Number of copies:", results[1])
-    # #print("Time:", results[2], "(ms)")
-    # #print(f"Time: {results[2]:.2f}(ms)")
-
-
+        if user_choice == 1:
+            print("1. Selection Sort\n2. Insertion Sort\n3. Merge Sort\n4. Quick Sort\n5. Heap Sort\n"
+                  "6. Bubble Sort\n7. Obs1 Bubble Sort\n8. Obs2 Bubble Sort\n9. Obs3 Bubble Sort\n"
+                  "10. Sink-Down Sort\n11. Bi-Directional Sort")
+            print()
+            algo_choice = int(input("Enter choice: "))
+            array_size = int(input("Enter an array size: "))
+            array = generate_random_integer_set(array_size)
+            test_single_algorithm(algo_choice, array)
+            print()
+        if user_choice == 2:
+            array_size = int(input("Enter an array size: "))
+            # array = generate_random_integer_set(array_size)
+            test_multiple_algorithms(array_size)
+        if user_choice == 3:
+            print("Goodbye")
+            break
 main()
