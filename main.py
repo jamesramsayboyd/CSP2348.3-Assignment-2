@@ -313,25 +313,29 @@ def test_multiple_algorithms(input_size):
 
 
 def print_single_test_results(algorithm, array_size, result_set):
-    #print("Algorithm Name  |  Array Size  |  No. of Comparisons  |  Run Time (in ms.)")
-    column_titles = [["Algorithm Name", "Array Size", "No. of Comparisons", "Run Time (in ms.)"]]
-    column_data = [[algorithm, array_size, result_set[0], result_set[2]]]
-    # format_row = "{:>12}" * len(column_titles) + 1
-    # print(format_row.format(*column_titles))
-    # print(format_row.format(*column_data))
+    column_headers = [["Algorithm Name", "Array Size", "No. of Comparisons", "Run Time (in ms.)"]]
+    test_data = [[algorithm, array_size, result_set[0], result_set[2]]]
+    table_formatter(column_headers, test_data)
 
-    for x in column_titles:
-        print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*x))
-    for x in column_data:
-        print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*x))
+def print_table_two():
+    input_size = [100, 200, 400, 800, 1000, 2000]
+    for i in range(1, 12):
+        for j in input_size:
+            test_single_algorithm(i, j)
+    column_headers = [["Sorting Algorithm", "n=100", "n=200", "n=400", "n=800", "n=1000", "n=2000"]]
 
 
-def table_formatter(column_headers, row_data):
-    for x in column_headers:
+
+def print_table_three():
+    column_headers = [["Sorting Algorithm", "n=100", "n=200", "n=400", "n=800", "n=1000", "n=2000"]]
+
+
+
+def table_formatter(column_headers, test_data):
+    for x in column_headers, test_data:
         print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*x))
-    for row in row_data:
-        for cell in row:
-            print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*cell))
+    for row in test_data:
+        print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*row))
 
 
 def main():
