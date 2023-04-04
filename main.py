@@ -271,30 +271,37 @@ def bi_directional_bubble_sort(arr):
 def test_single_algorithm(choice, array):
     if choice == 1:
         data = selection_sort(array)
-        print_test_results("Selection Sort", len(array), data)
+        print_single_test_results("Selection Sort", len(array), data)
     elif choice == 2:
         data = insertion_sort(array)
-        print_test_results("Insertion Sort", len(array), data)
+        print_single_test_results("Insertion Sort", len(array), data)
     elif choice == 3:
         data = merge_sort(array)
-        print_test_results("Merge Sort", len(array), data)
+        print_single_test_results("Merge Sort", len(array), data)
     elif choice == 4:
         data = quick_sort(array, 0, len(array) - 1)
-        print_test_results("Quick Sort", len(array), data)
+        print_single_test_results("Quick Sort", len(array), data)
     elif choice == 5:
-        heap_sort(array)
+        data = heap_sort(array)
+        print_single_test_results("Heap Sort", len(array), data)
     elif choice == 6:
-        bubble_sort(array)
+        data = bubble_sort(array)
+        print_single_test_results("Bubble Sort", len(array), data)
     elif choice == 7:
-        obs1_bubble_sort(array)
+        data = obs1_bubble_sort(array)
+        print_single_test_results("Obs1 Bubble Sort", len(array), data)
     elif choice == 8:
-        obs2_bubble_sort(array)
+        data=obs2_bubble_sort(array)
+        print_single_test_results("Obs2 Bubble Sort", len(array), data)
     elif choice == 9:
-        obs3_bubble_sort(array)
+        data = obs3_bubble_sort(array)
+        print_single_test_results("Obs3 Bubble Sort", len(array), data)
     elif choice == 10:
-        sink_down_sort(array)
+        data = sink_down_sort(array)
+        print_single_test_results("Sink-Down Sort", len(array), data)
     elif choice == 11:
-        bi_directional_bubble_sort(array)
+        data = bi_directional_bubble_sort(array)
+        print_single_test_results("Bi-Directional Bubble Sort", len(array), data)
     else:
         print("Error: Invalid input")
 
@@ -305,8 +312,26 @@ def test_multiple_algorithms(input_size):
             test_single_algorithm(i, array)
 
 
-def print_test_results(algorithm, array_size, result_set):
-    print(algorithm, array_size, result_set[0], result_set[2])
+def print_single_test_results(algorithm, array_size, result_set):
+    #print("Algorithm Name  |  Array Size  |  No. of Comparisons  |  Run Time (in ms.)")
+    column_titles = [["Algorithm Name", "Array Size", "No. of Comparisons", "Run Time (in ms.)"]]
+    column_data = [[algorithm, array_size, result_set[0], result_set[2]]]
+    # format_row = "{:>12}" * len(column_titles) + 1
+    # print(format_row.format(*column_titles))
+    # print(format_row.format(*column_data))
+
+    for x in column_titles:
+        print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*x))
+    for x in column_data:
+        print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*x))
+
+
+def table_formatter(column_headers, row_data):
+    for x in column_headers:
+        print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*x))
+    for row in row_data:
+        for cell in row:
+            print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*cell))
 
 
 def main():
