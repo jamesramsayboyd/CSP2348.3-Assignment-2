@@ -331,36 +331,30 @@ def print_multiple_algorithm_test_results(input_size):
 
 
 def find_average_comparison_number(array):
-    comparison_counter = 0
-    for i in range(10):
-        comparison_counter += test_single_algorithm(1, array)[2]
-        avg_comparisons = comparison_counter / 10
-    return avg_comparisons
+    row_of_averages = [len(array)]
+    #for i in range(11): # number of different sorting algorithms
+    for i in range(1):  # number of different sorting algorithms
+        comparison_counter = 0
+        for j in range(10): # number of tests to perform to find average
+            result = test_single_algorithm(i + 1, array)
+            comparison_counter += result[2]
+        avg_comparisons = comparison_counter // 10
+        row_of_averages.append(avg_comparisons)
+    return row_of_averages
 
 
 
 def print_table_two():
+    print("Average number of comparisons performed for a given input size (averaged over 10 runs)")
     input_size = [100, 200, 400, 800, 1000, 2000]
-    comparison_counter = 0
-
+    #column_headers = [["Input Size", "Selection Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Heap Sort", "Bubble Sort", "Obs1 Bubble Sort", "Obs2 Bubble Sort", "Obs3 Bubble Sort", "Sink-Down Sort", "BD Bubble Sort"]]
+    column_headers = [["Input Size", "Selection Sort"]]
+    all_average_comparison_numbers = []
     for x in input_size:
         array = generate_random_integer_set(x)
-        for i in range(11):
-            find_average_comparison_number(array)
-
-
-    for i in range(10):
-        data_set = test_single_algorithm(1, 100)
-
-    # for i in input_size:
-    #     for j in range(11):
-    #         for k in range(10):
-    #             comparison_counter += test_single_algorithm(j, i)[2]
-    #             average_comparison = comparison_counter / i
-    # for i in range(1, 12):
-    #     for j in input_size:
-    #         test_single_algorithm(i, j)
-    # column_headers = [["Sorting Algorithm", "n=100", "n=200", "n=400", "n=800", "n=1000", "n=2000"]]
+        all_average_comparison_numbers.append(find_average_comparison_number(array))
+    table_formatter(column_headers, all_average_comparison_numbers)
+    print()
 
 
 
@@ -373,10 +367,8 @@ def table_formatter(column_headers, test_data):
     print("Test Results:")
     format_row = "{:^20}" * len(column_headers[0])
     for x in column_headers:
-        #print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*x))
         print(format_row.format(*x))
     for row in test_data:
-        # print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*row))
         print(format_row.format(*row))
 
 
@@ -402,9 +394,11 @@ def main():
             print_multiple_algorithm_test_results(array_size)
             print()
         elif user_choice == 3:
-            print("generating table 2")
+            print("Generating table 2...")
+            print_table_two()
         elif user_choice == 4:
-            print("generating table 2")
+            print("Generating table 3...")
+            print_table_three()
         elif user_choice == 5:
             print("Goodbye")
             break
