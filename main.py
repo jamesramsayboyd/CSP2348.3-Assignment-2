@@ -9,9 +9,10 @@ def generate_random_integer_set(a):
     return array
 
 
-def selection_sort(arr):
-    timer_start = time.perf_counter_ns()
+def selection_sort(array):
+    arr = array[:] # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
     n = len(arr)
     for i in range(n):
         minimum = i
@@ -22,12 +23,13 @@ def selection_sort(arr):
         arr[i], arr[minimum] = arr[minimum], arr[i]
         copy_counter += 2
     timer_end = time.perf_counter_ns()
-    return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
+    return "Selection Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def insertion_sort(arr):
-    timer_start = time.perf_counter_ns()
+def insertion_sort(array):
+    arr = array[:] # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
     n = len(arr)
     for i in range(1, n):
         key = arr[i]
@@ -39,13 +41,15 @@ def insertion_sort(arr):
             j -= 1
         arr[j + 1] = key
     timer_end = time.perf_counter_ns()
-    return comparison_counter, copy_counter, timer_end - timer_start
+    return "Insertion Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def merge_sort(arr):
+def merge_sort(array):
+    arr = array[:] # creating a copy of the array to preserve the original
+    comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
     if len(arr) > 1:
-        timer_start = time.perf_counter_ns()
-        comparison_counter = copy_counter = i = j = k = 0
+        i = j = k = 0
         mid = len(arr) // 2
         sub_array_1 = arr[:mid]
         sub_array_2 = arr[mid:]
@@ -79,13 +83,17 @@ def merge_sort(arr):
             j += 1
             k += 1
 
-        timer_end = time.perf_counter_ns()
-        return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
+    timer_end = time.perf_counter_ns()
+    return "Merge Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
 def quick_sort_partition(array, low, high):
+    arr = array[:]  # creating a copy of the array to preserve the original
+    comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
+
     # choose the rightmost element as pivot
-    pivot = array[high]
+    pivot = arr[high]
 
     # pointer for greater element
     i = low - 1
@@ -93,40 +101,43 @@ def quick_sort_partition(array, low, high):
     # traverse through all elements
     # compare each element with pivot
     for j in range(low, high):
-        if array[j] <= pivot:
+        if arr[j] <= pivot:
             # If element smaller than pivot is found
             # swap it with the greater element pointed by i
             i = i + 1
 
             # Swapping element at i with element at j
-            (array[i], array[j]) = (array[j], array[i])
+            (arr[i], arr[j]) = (arr[j], arr[i])
 
     # Swap the pivot element with the greater element specified by i
-    (array[i + 1], array[high]) = (array[high], array[i + 1])
+    (arr[i + 1], arr[high]) = (arr[high], arr[i + 1])
 
     # Return the position from where partition is done
     return i + 1
 
 
 def quick_sort(array, low, high):
-    timer_start = time.perf_counter_ns()
+    arr = array[:]  # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
+    n = len(arr)
     if low < high:
         # Find pivot element such that
         # element smaller than pivot are on the left
         # element greater than pivot are on the right
-        pi = quick_sort_partition(array, low, high)
+        pi = quick_sort_partition(arr, low, high)
 
         # Recursive call on the left of pivot
-        quick_sort(array, low, pi - 1)
+        quick_sort(arr, low, pi - 1)
 
         # Recursive call on the right of pivot
-        quick_sort(array, pi + 1, high)
+        quick_sort(arr, pi + 1, high)
     timer_end = time.perf_counter_ns()
-    return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
+    return "Quick Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def heapify(arr, n, i):
+def heapify(array, n, i):
+    arr = array[:]
     largest = i
     left = 2 * i + 1
     right = 2 * i + 2
@@ -142,9 +153,10 @@ def heapify(arr, n, i):
         heapify(arr, n, largest)
 
 
-def heap_sort(arr):
-    timer_start = time.perf_counter_ns()
+def heap_sort(array):
+    arr = array[:] # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
     n = len(arr)
 
     for i in range(n // 2 - 1, -1, -1):
@@ -154,12 +166,13 @@ def heap_sort(arr):
         arr[i], arr[0] = arr[0], arr[i]
         heapify(arr, i, 0)
     timer_end = time.perf_counter_ns()
-    return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
+    return "Heap Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def bubble_sort(arr):
-    timer_start = time.perf_counter_ns()
+def bubble_sort(array):
+    arr = array[:] # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
     n = len(arr)
     for i in range(n - 1):
         for j in range(n - 1):
@@ -168,12 +181,13 @@ def bubble_sort(arr):
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]  # swap adjacent elements
                 copy_counter += 1
     timer_end = time.perf_counter_ns()
-    return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
+    return "Bubble Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def obs1_bubble_sort(arr):
-    timer_start = time.perf_counter_ns()
+def obs1_bubble_sort(array):
+    arr = array[:] # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
     n = len(arr)
     for i in range(n - 1):
         for k in range(0, n - i - 1):
@@ -182,12 +196,13 @@ def obs1_bubble_sort(arr):
                 arr[k], arr[k + 1] = arr[k + 1], arr[k]  # swap adjacent elements
                 copy_counter += 1
     timer_end = time.perf_counter_ns()
-    return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
+    return "Obs1 Bubble Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def obs2_bubble_sort(arr):
-    timer_start = time.perf_counter_ns()
+def obs2_bubble_sort(array):
+    arr = array[:] # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
     n = len(arr)
     swapped = False
     for i in range(n - 1):
@@ -200,12 +215,13 @@ def obs2_bubble_sort(arr):
         if not swapped:
             break
     timer_end = time.perf_counter_ns()
-    return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
+    return "Obs2 Bubble Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def obs3_bubble_sort(arr):
-    timer_start = time.perf_counter_ns()
+def obs3_bubble_sort(array):
+    arr = array[:] # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
     n = len(arr)
     swapped = False
     for i in range(n - 1):
@@ -218,12 +234,13 @@ def obs3_bubble_sort(arr):
         if not swapped:
             break
     timer_end = time.perf_counter_ns()
-    return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
+    return "Obs3 Bubble Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def sink_down_sort(arr):
-    timer_start = time.perf_counter_ns()
+def sink_down_sort(array):
+    arr = array[:] # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
     n = len(arr)
     swapped = False
     for i in range(n - 1):
@@ -236,12 +253,13 @@ def sink_down_sort(arr):
         if not swapped:
             break
     timer_end = time.perf_counter_ns()
-    return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
+    return "Sink-Down Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def bi_directional_bubble_sort(arr):
-    timer_start = time.perf_counter_ns()
+def bi_directional_bubble_sort(array):
+    arr = array[:] # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
+    timer_start = time.perf_counter_ns()
     n = len(arr)
     array_sorted = False
     while not array_sorted:
@@ -265,43 +283,32 @@ def bi_directional_bubble_sort(arr):
         if array_sorted:
             break
     timer_end = time.perf_counter_ns()
-    return comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
+    return "BD Bubble Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
 def test_single_algorithm(choice, array):
     if choice == 1:
-        data = selection_sort(array)
-        print_single_test_results("Selection Sort", len(array), data)
+        print_single_test_results(selection_sort(array))
     elif choice == 2:
-        data = insertion_sort(array)
-        print_single_test_results("Insertion Sort", len(array), data)
+        print_single_test_results(insertion_sort(array))
     elif choice == 3:
-        data = merge_sort(array)
-        print_single_test_results("Merge Sort", len(array), data)
+        print_single_test_results(merge_sort(array))
     elif choice == 4:
-        data = quick_sort(array, 0, len(array) - 1)
-        print_single_test_results("Quick Sort", len(array), data)
+        print_single_test_results(quick_sort(array, 0, len(array) - 1))
     elif choice == 5:
-        data = heap_sort(array)
-        print_single_test_results("Heap Sort", len(array), data)
+        print_single_test_results(heap_sort(array))
     elif choice == 6:
-        data = bubble_sort(array)
-        print_single_test_results("Bubble Sort", len(array), data)
+        print_single_test_results(bubble_sort(array))
     elif choice == 7:
-        data = obs1_bubble_sort(array)
-        print_single_test_results("Obs1 Bubble Sort", len(array), data)
+        print_single_test_results(obs1_bubble_sort(array))
     elif choice == 8:
-        data=obs2_bubble_sort(array)
-        print_single_test_results("Obs2 Bubble Sort", len(array), data)
+        print_single_test_results(obs2_bubble_sort(array))
     elif choice == 9:
-        data = obs3_bubble_sort(array)
-        print_single_test_results("Obs3 Bubble Sort", len(array), data)
+        print_single_test_results(obs3_bubble_sort(array))
     elif choice == 10:
-        data = sink_down_sort(array)
-        print_single_test_results("Sink-Down Sort", len(array), data)
+        print_single_test_results(sink_down_sort(array))
     elif choice == 11:
-        data = bi_directional_bubble_sort(array)
-        print_single_test_results("Bi-Directional Bubble Sort", len(array), data)
+        print_single_test_results(bi_directional_bubble_sort(array))
     else:
         print("Error: Invalid input")
 
@@ -312,10 +319,18 @@ def test_multiple_algorithms(input_size):
             test_single_algorithm(i, array)
 
 
-def print_single_test_results(algorithm, array_size, result_set):
+def print_single_test_results(data_set):
+    print("Test Results:")
     column_headers = [["Algorithm Name", "Array Size", "No. of Comparisons", "Run Time (in ms.)"]]
-    test_data = [[algorithm, array_size, result_set[0], result_set[2]]]
-    table_formatter(column_headers, test_data)
+    table_data = [[data_set[0], data_set[1], data_set[2], data_set[4]]]
+    table_formatter(column_headers, table_data)
+
+
+def print_comparison_table(data_set):
+    column_headers = [["Sorting Algorithm Name", "Array Size", "No. of Comparisons", "Run Time (in ms.)"]]
+    table_data = [[data_set[0], data_set[1], data_set[2], data_set[4]]]
+    table_formatter(column_headers, table_data)
+
 
 def print_table_two():
     input_size = [100, 200, 400, 800, 1000, 2000]
@@ -332,7 +347,7 @@ def print_table_three():
 
 
 def table_formatter(column_headers, test_data):
-    for x in column_headers, test_data:
+    for x in column_headers:
         print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*x))
     for row in test_data:
         print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*row))
@@ -340,7 +355,8 @@ def table_formatter(column_headers, test_data):
 
 def main():
     while True:
-        print("1. Test an individual sorting algorithm\n2. Test multiple sorting algorithms\n3. Exit")
+        print("1. Test an individual sorting algorithm\n2. Test multiple sorting algorithms\n"
+              "3. Generate Table 2\n4. Generate Table 3\n5. Exit")
         user_choice = int(input("Enter choice: "))
 
         if user_choice == 1:
@@ -353,12 +369,16 @@ def main():
             array = generate_random_integer_set(array_size)
             test_single_algorithm(algo_choice, array)
             print()
-        if user_choice == 2:
+        elif user_choice == 2:
             array_size = int(input("Enter an array size: "))
             # array = generate_random_integer_set(array_size)
             test_multiple_algorithms(array_size)
             print()
-        if user_choice == 3:
+        elif user_choice == 3:
+            print("generating table 2")
+        elif user_choice == 4:
+            print("generating table 2")
+        elif user_choice == 5:
             print("Goodbye")
             break
 main()
