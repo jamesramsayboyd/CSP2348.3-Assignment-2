@@ -357,6 +357,29 @@ def print_table_two():
     print()
 
 
+# def find_average_comparisons():
+#     input_size = [100, 200, 400, 800, 1000, 2000]
+#     all_data = []
+#     for x in input_size:
+#         array = generate_random_integer_set(x)
+#         for i in range(11):
+#             comparison_counter = 0
+#             for j in range(10):
+#                 result = test_single_algorithm(i + 1, array)
+#                 comparison_counter += result[2]
+#             avg_comparisons = comparison_counter // 10
+#             row_of_averages = [result[0]]
+#             row_of_averages.append(avg_comparisons)
+#     all_data.append(row_of_averages)
+#     return all_data
+#
+#
+# def print_table_2():
+#     column_headers = [["Sorting Algorithm", "n = 100", "n = 200", "n = 400", "n = 800", "n = 1000", "n = 2000"]]
+#     table_formatter(column_headers, find_average_comparisons())
+
+
+
 
 def print_table_three():
     column_headers = [["Sorting Algorithm", "n=100", "n=200", "n=400", "n=800", "n=1000", "n=2000"]]
@@ -396,6 +419,7 @@ def main():
         elif user_choice == 3:
             print("Generating table 2...")
             print_table_two()
+            #print_table_2()
         elif user_choice == 4:
             print("Generating table 3...")
             print_table_three()
