@@ -48,6 +48,7 @@ def merge_sort(array):
     arr = array[:] # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
     timer_start = time.perf_counter_ns()
+    n = len(arr)
     if len(arr) > 1:
         i = j = k = 0
         mid = len(arr) // 2
@@ -288,56 +289,78 @@ def bi_directional_bubble_sort(array):
 
 def test_single_algorithm(choice, array):
     if choice == 1:
-        print_single_test_results(selection_sort(array))
+        return selection_sort(array)
     elif choice == 2:
-        print_single_test_results(insertion_sort(array))
+        return insertion_sort(array)
     elif choice == 3:
-        print_single_test_results(merge_sort(array))
+        return merge_sort(array)
     elif choice == 4:
-        print_single_test_results(quick_sort(array, 0, len(array) - 1))
+        return quick_sort(array, 0, len(array) - 1)
     elif choice == 5:
-        print_single_test_results(heap_sort(array))
+        return heap_sort(array)
     elif choice == 6:
-        print_single_test_results(bubble_sort(array))
+        return bubble_sort(array)
     elif choice == 7:
-        print_single_test_results(obs1_bubble_sort(array))
+        return obs1_bubble_sort(array)
     elif choice == 8:
-        print_single_test_results(obs2_bubble_sort(array))
+        return obs2_bubble_sort(array)
     elif choice == 9:
-        print_single_test_results(obs3_bubble_sort(array))
+        return obs3_bubble_sort(array)
     elif choice == 10:
-        print_single_test_results(sink_down_sort(array))
+        return sink_down_sort(array)
     elif choice == 11:
-        print_single_test_results(bi_directional_bubble_sort(array))
+        return bi_directional_bubble_sort(array)
     else:
         print("Error: Invalid input")
 
-def test_multiple_algorithms(input_size):
-    array = generate_random_integer_set(input_size)
-    print("Algorithm Name  |  Array Size  |  No. of Comparisons  |  Run Time (in ms.)")
-    for i in range(1, 12):
-            test_single_algorithm(i, array)
 
-
-def print_single_test_results(data_set):
-    print("Test Results:")
+def print_single_algorithm_test_results(data_set):
     column_headers = [["Algorithm Name", "Array Size", "No. of Comparisons", "Run Time (in ms.)"]]
     table_data = [[data_set[0], data_set[1], data_set[2], data_set[4]]]
     table_formatter(column_headers, table_data)
 
 
-def print_comparison_table(data_set):
-    column_headers = [["Sorting Algorithm Name", "Array Size", "No. of Comparisons", "Run Time (in ms.)"]]
-    table_data = [[data_set[0], data_set[1], data_set[2], data_set[4]]]
+def print_multiple_algorithm_test_results(input_size):
+    array = generate_random_integer_set(input_size)
+    column_headers = [["Algorithm Name", "Array Size", "No. of Comparisons", "Run Time (in ms.)"]]
+    table_data = []
+    for i in range(11):
+        data_set = test_single_algorithm(i + 1, array)
+        table_data.append([data_set[0], data_set[1], data_set[2], data_set[4]])
     table_formatter(column_headers, table_data)
+
+
+def find_average_comparison_number(array):
+    comparison_counter = 0
+    for i in range(10):
+        comparison_counter += test_single_algorithm(1, array)[2]
+        avg_comparisons = comparison_counter / 10
+    return avg_comparisons
+
 
 
 def print_table_two():
     input_size = [100, 200, 400, 800, 1000, 2000]
-    for i in range(1, 12):
-        for j in input_size:
-            test_single_algorithm(i, j)
-    column_headers = [["Sorting Algorithm", "n=100", "n=200", "n=400", "n=800", "n=1000", "n=2000"]]
+    comparison_counter = 0
+
+    for x in input_size:
+        array = generate_random_integer_set(x)
+        for i in range(11):
+            find_average_comparison_number(array)
+
+
+    for i in range(10):
+        data_set = test_single_algorithm(1, 100)
+
+    # for i in input_size:
+    #     for j in range(11):
+    #         for k in range(10):
+    #             comparison_counter += test_single_algorithm(j, i)[2]
+    #             average_comparison = comparison_counter / i
+    # for i in range(1, 12):
+    #     for j in input_size:
+    #         test_single_algorithm(i, j)
+    # column_headers = [["Sorting Algorithm", "n=100", "n=200", "n=400", "n=800", "n=1000", "n=2000"]]
 
 
 
@@ -347,6 +370,7 @@ def print_table_three():
 
 
 def table_formatter(column_headers, test_data):
+    print("Test Results:")
     for x in column_headers:
         print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*x))
     for row in test_data:
@@ -357,6 +381,7 @@ def main():
     while True:
         print("1. Test an individual sorting algorithm\n2. Test multiple sorting algorithms\n"
               "3. Generate Table 2\n4. Generate Table 3\n5. Exit")
+        print()
         user_choice = int(input("Enter choice: "))
 
         if user_choice == 1:
@@ -367,12 +392,11 @@ def main():
             algo_choice = int(input("Enter choice: "))
             array_size = int(input("Enter an array size: "))
             array = generate_random_integer_set(array_size)
-            test_single_algorithm(algo_choice, array)
+            print_single_algorithm_test_results(test_single_algorithm(algo_choice, array))
             print()
         elif user_choice == 2:
             array_size = int(input("Enter an array size: "))
-            # array = generate_random_integer_set(array_size)
-            test_multiple_algorithms(array_size)
+            print_multiple_algorithm_test_results(array_size)
             print()
         elif user_choice == 3:
             print("generating table 2")
