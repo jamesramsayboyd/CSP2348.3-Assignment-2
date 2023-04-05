@@ -371,10 +371,13 @@ def print_table_three():
 
 def table_formatter(column_headers, test_data):
     print("Test Results:")
+    format_row = "{:^20}" * len(column_headers[0])
     for x in column_headers:
-        print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*x))
+        #print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*x))
+        print(format_row.format(*x))
     for row in test_data:
-        print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*row))
+        # print('| {:^20} | {:^20} | {:^20} | {:^20} |'.format(*row))
+        print(format_row.format(*row))
 
 
 def main():
