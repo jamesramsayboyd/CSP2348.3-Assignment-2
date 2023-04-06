@@ -317,6 +317,7 @@ def test_single_algorithm(choice, array):
 def print_single_algorithm_test_results(data_set):
     column_headers = [["Algorithm Name", "Array Size", "No. of Comparisons", "Run Time (in ms.)"]]
     table_data = [[data_set[0], data_set[1], data_set[2], data_set[4]]]
+    print("Testing", data_set[0], "algorithm with input size: ", data_set[1])
     table_formatter(column_headers, table_data)
 
 
@@ -330,64 +331,52 @@ def print_multiple_algorithm_test_results(input_size):
     table_formatter(column_headers, table_data)
 
 
-def find_average_comparison_number(array):
-    row_of_averages = [len(array)]
-    #for i in range(11): # number of different sorting algorithms
-    for i in range(1):  # number of different sorting algorithms
-        comparison_counter = 0
-        for j in range(10): # number of tests to perform to find average
-            result = test_single_algorithm(i + 1, array)
-            comparison_counter += result[2]
-        avg_comparisons = comparison_counter // 10
-        row_of_averages.append(avg_comparisons)
-    return row_of_averages
-
-
-
 def print_table_two():
-    print("Average number of comparisons performed for a given input size (averaged over 10 runs)")
-    input_size = [100, 200, 400, 800, 1000, 2000]
-    #column_headers = [["Input Size", "Selection Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Heap Sort", "Bubble Sort", "Obs1 Bubble Sort", "Obs2 Bubble Sort", "Obs3 Bubble Sort", "Sink-Down Sort", "BD Bubble Sort"]]
-    column_headers = [["Input Size", "Selection Sort"]]
-    all_average_comparison_numbers = []
-    for x in input_size:
-        array = generate_random_integer_set(x)
-        all_average_comparison_numbers.append(find_average_comparison_number(array))
-    table_formatter(column_headers, all_average_comparison_numbers)
-    print()
-
-
-# def find_average_comparisons():
-#     input_size = [100, 200, 400, 800, 1000, 2000]
-#     all_data = []
-#     for x in input_size:
-#         array = generate_random_integer_set(x)
-#         for i in range(11):
-#             comparison_counter = 0
-#             for j in range(10):
-#                 result = test_single_algorithm(i + 1, array)
-#                 comparison_counter += result[2]
-#             avg_comparisons = comparison_counter // 10
-#             row_of_averages = [result[0]]
-#             row_of_averages.append(avg_comparisons)
-#     all_data.append(row_of_averages)
-#     return all_data
-#
-#
-# def print_table_2():
-#     column_headers = [["Sorting Algorithm", "n = 100", "n = 200", "n = 400", "n = 800", "n = 1000", "n = 2000"]]
-#     table_formatter(column_headers, find_average_comparisons())
-
+    print("Generating Table 2 (this may take up to 30 seconds)...")
+    print("\nAverage number of comparisons for sorting arrays of n integers (over 10 runs)")
+    column_headers = [["Sorting Algorithm", "n = 100", "n = 200", "n = 400", "n = 800", "n = 1000", "n = 2000"]]
+    input_size = [100, 200, 400, 800, 1000, 2000] # size of arrays to generate for testing
+    all_data = [] # initialising lists to store data
+    for i in range(11): # no. of sorting algorithms
+        row_of_averages = [] # list to store averages data for various input sizes
+        for x in input_size: # 100, 200, 400, etc
+            comparison_counter = 0 # resetting comparison counter for each test
+            for j in range(10): # no of tests to perform to find average
+                array = generate_random_integer_set(x) # generate random number set of 100, 200, etc
+                result = test_single_algorithm(i + 1, array) # storing results
+                comparison_counter += result[2] # counting no. of comparisons
+            avg_comparisons = comparison_counter // 10 # finding average no. of comparisons by dividing by no. of tests
+            row_of_averages.append(avg_comparisons) # adding average no. of comparisons to list
+        row_of_averages.insert(0, result[0]) # inserting name of sorting algorithm to first index of list
+        all_data.append(row_of_averages) # appending entire list with algorithm name and averages of all tests to final list
+    table_formatter(column_headers, all_data) # feeding data to table_formatter function
 
 
 
 def print_table_three():
-    column_headers = [["Sorting Algorithm", "n=100", "n=200", "n=400", "n=800", "n=1000", "n=2000"]]
+    print("Generating Table 3 (this may take up to 30 seconds)...")
+    print("\nAverage time taken for sorting arrays of n integers (over 10 runs, displayed in ms)")
+    column_headers = [["Sorting Algorithm", "n = 100", "n = 200", "n = 400", "n = 800", "n = 1000", "n = 2000"]]
+    input_size = [100, 200, 400, 800, 1000, 2000]  # size of arrays to generate for testing
+    all_data = []  # initialising lists to store data
+    for i in range(11):  # no. of sorting algorithms
+        row_of_averages = []  # list to store averages data for various input sizes
+        for x in input_size:  # 100, 200, 400, etc
+            time_counter = 0  # resetting time counter for each test
+            for j in range(10):  # no of tests to perform to find average
+                array = generate_random_integer_set(x)  # generate random number set of 100, 200, etc
+                result = test_single_algorithm(i + 1, array)  # storing results
+                time_counter += result[4]  # counting total time taken
+            avg_time = round(time_counter / 10, 2)  # finding average time by dividing by no. of tests, round to 2dp
+            row_of_averages.append(avg_time)  # adding average time to list
+        row_of_averages.insert(0, result[0])  # inserting name of sorting algorithm to first index of list
+        all_data.append(
+            row_of_averages)  # appending entire list with algorithm name and averages of all tests to final list
+    table_formatter(column_headers, all_data) # feeding data to table_formatter function
 
 
 
 def table_formatter(column_headers, test_data):
-    print("Test Results:")
     format_row = "{:^20}" * len(column_headers[0])
     for x in column_headers:
         print(format_row.format(*x))
@@ -417,12 +406,11 @@ def main():
             print_multiple_algorithm_test_results(array_size)
             print()
         elif user_choice == 3:
-            print("Generating table 2...")
             print_table_two()
-            #print_table_2()
+            print()
         elif user_choice == 4:
-            print("Generating table 3...")
             print_table_three()
+            print()
         elif user_choice == 5:
             print("Goodbye")
             break
