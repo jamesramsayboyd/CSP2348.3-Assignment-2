@@ -2,6 +2,7 @@ import random
 import time
 
 
+""" Generates an array of random numbers between 0 and 99. Array size is chosen by the user. """
 def generate_random_integer_set(a):
     array = []
     for i in range(a):
@@ -287,6 +288,14 @@ def bi_directional_bubble_sort(array):
     return "BD Bubble Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
+""" Calls the appropriate sorting algorithm function and passes it an array of the user's chosen size. Returns five
+relevant data points as a list, i.e.
+result[0] = The sorting algorithm's name
+result[1] = The size of the array
+result[2] = Number of comparison operations performed
+result[3] = Number of copy operations performed
+result[4] = Time taken (in ms.)
+"""
 def test_single_algorithm(choice, array):
     if choice == 1:
         return selection_sort(array)
@@ -314,6 +323,10 @@ def test_single_algorithm(choice, array):
         print("Error: Invalid input")
 
 
+""" Prompts the user to choose a sorting algorithm and an input size, before generating an array of random numbers and
+sending it to the appropriate sorting function. Data is passed to the table_formatter function for printing to the
+console as a table.
+"""
 def print_single_algorithm_test_results(data_set):
     column_headers = [["Algorithm Name", "Array Size", "No. of Comparisons", "Run Time (in ms.)"]]
     table_data = [[data_set[0], data_set[1], data_set[2], data_set[4]]]
@@ -321,6 +334,9 @@ def print_single_algorithm_test_results(data_set):
     table_formatter(column_headers, table_data)
 
 
+""" Prompts the user for an input size, then generates an array of random numbers and passes this single array to each
+of the 11 sorting algorithms to compare results. Data is sent to the table_formatter function to be printed as a table.
+"""
 def print_multiple_algorithm_test_results(input_size):
     array = generate_random_integer_set(input_size)
     column_headers = [["Algorithm Name", "Array Size", "No. of Comparisons", "Run Time (in ms.)"]]
@@ -331,6 +347,11 @@ def print_multiple_algorithm_test_results(input_size):
     table_formatter(column_headers, table_data)
 
 
+""" Generates Table 2 from the assignment document, comparing the number of comparison operations performed by each
+sorting algorithm. Uses three nested loops to iterate through 11 sorting algorithms, 6 different input sizes and 10 
+tests each, taking the average of each test for each input size for each algorithm. Passes all this data to the 
+table_formatter function for printing to the console.
+"""
 def print_table_two():
     print("Generating Table 2 (this may take up to 30 seconds)...")
     print("\nAverage number of comparisons for sorting arrays of n integers (over 10 runs)")
@@ -352,7 +373,11 @@ def print_table_two():
     table_formatter(column_headers, all_data) # feeding data to table_formatter function
 
 
-
+""" Generates Table 3 from the assignment document, comparing the time taken by each of the 11 sorting algorithms. 
+Uses three nested loops to iterate through 11 sorting algorithms, 6 different input sizes and 10 tests each, taking the 
+average of each test for each input size for each algorithm. Passes all this data to the table_formatter function for 
+printing to the console.
+"""
 def print_table_three():
     print("Generating Table 3 (this may take up to 30 seconds)...")
     print("\nAverage time taken for sorting arrays of n integers (over 10 runs, displayed in ms)")
@@ -375,7 +400,9 @@ def print_table_three():
     table_formatter(column_headers, all_data) # feeding data to table_formatter function
 
 
-
+""" A function used to print data in a nicely formatted data. Takes two lists as arguments, one for column headers
+and one for data in each row
+"""
 def table_formatter(column_headers, test_data):
     format_row = "{:^20}" * len(column_headers[0])
     for x in column_headers:
