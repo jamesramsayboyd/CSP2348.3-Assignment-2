@@ -6,7 +6,7 @@ import time
 def generate_random_integer_set(a):
     array = []
     for i in range(a):
-        array.append(random.randint(0, 99))
+        array.append(random.randint(0, 999))
     return array
 
 
@@ -47,6 +47,7 @@ def insertion_sort(array):
 
 def merge_sort(array):
     arr = array[:] # creating a copy of the array to preserve the original
+    print(arr)
     comparison_counter = copy_counter = 0
     timer_start = time.perf_counter_ns()
     n = len(arr)
@@ -60,37 +61,37 @@ def merge_sort(array):
         merge_sort(sub_array_2)
 
         while i < len(sub_array_1) and j < len(sub_array_2):
-            comparison_counter += 1
             if sub_array_1[i] < sub_array_2[j]:
+                comparison_counter += 1
                 arr[k] = sub_array_1[i]
                 copy_counter += 1
                 i += 1
             else:
+                comparison_counter += 1
                 arr[k] = sub_array_2[j]
                 copy_counter += 1
                 j += 1
             k += 1
 
         while i < len(sub_array_1):
-            comparison_counter += 1
             arr[k] = sub_array_1[i]
             copy_counter += 1
             i += 1
             k += 1
 
         while j < len(sub_array_2):
-            comparison_counter += 1
             arr[k] = sub_array_2[j]
             copy_counter += 1
             j += 1
             k += 1
 
     timer_end = time.perf_counter_ns()
+    print(arr)
     return "Merge Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def quick_sort_partition(array, low, high):
-    arr = array[:]  # creating a copy of the array to preserve the original
+def quick_sort_partition(arr, low, high):
+    #arr = array[:]  # creating a copy of the array to preserve the original
     comparison_counter = copy_counter = 0
     timer_start = time.perf_counter_ns()
 
@@ -120,6 +121,7 @@ def quick_sort_partition(array, low, high):
 
 def quick_sort(array, low, high):
     arr = array[:]  # creating a copy of the array to preserve the original
+    #print(arr)
     comparison_counter = copy_counter = 0
     timer_start = time.perf_counter_ns()
     n = len(arr)
@@ -135,11 +137,12 @@ def quick_sort(array, low, high):
         # Recursive call on the right of pivot
         quick_sort(arr, pi + 1, high)
     timer_end = time.perf_counter_ns()
+    #print(arr)
     return "Quick Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-def heapify(array, n, i):
-    arr = array[:]
+def heapify(arr, n, i):
+    comparison_counter = copy_counter = 0
     largest = i
     left = 2 * i + 1
     right = 2 * i + 2
@@ -151,23 +154,35 @@ def heapify(array, n, i):
         largest = right
 
     if largest != i:
+        comparison_counter += 1
         arr[i], arr[largest] = arr[largest], arr[i]
-        heapify(arr, n, largest)
+        copy_counter += 1
+        results = heapify(arr, n, largest)
+        comparison_counter += results[0]
+    return comparison_counter, copy_counter
 
 
 def heap_sort(array):
     arr = array[:] # creating a copy of the array to preserve the original
+    #print(arr)
     comparison_counter = copy_counter = 0
     timer_start = time.perf_counter_ns()
     n = len(arr)
 
     for i in range(n // 2 - 1, -1, -1):
-        heapify(arr, n, i)
+        results = heapify(array, n, i)
+        comparison_counter += results[0]
+        copy_counter += results[1]
 
     for i in range(n - 1, 0, -1):
         arr[i], arr[0] = arr[0], arr[i]
-        heapify(arr, i, 0)
+        copy_counter += 1
+        results = heapify(arr, i, 0)
+        comparison_counter += results[0]
+        copy_counter += results[1]
+
     timer_end = time.perf_counter_ns()
+    #print(arr)
     return "Heap Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
