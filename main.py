@@ -43,7 +43,6 @@ def insertion_sort(arr):
     return "Insertion Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
 
-
 def merge_sort(arr):
     comparison_counter = copy_counter = 0
     timer_start = time.perf_counter_ns()
@@ -60,16 +59,15 @@ def merge_sort(arr):
 
         while i < len(sub_array_1) and j < len(sub_array_2):
             if sub_array_1[i] < sub_array_2[j]:
-                comparison_counter += 1
                 arr[k] = sub_array_1[i]
                 copy_counter += 1
                 i += 1
             else:
-                comparison_counter += 1
                 arr[k] = sub_array_2[j]
                 copy_counter += 1
                 j += 1
             k += 1
+            comparison_counter += 1
 
         while i < len(sub_array_1):
             arr[k] = sub_array_1[i]
@@ -88,28 +86,17 @@ def merge_sort(arr):
 
 
 def quick_sort_partition(arr, low, high):
-    # choose the rightmost element as pivot
+    comparison_counter = 0
     pivot = arr[high]
-
-    # pointer for greater element
     i = low - 1
-
-    # traverse through all elements
-    # compare each element with pivot
     for j in range(low, high):
+        comparison_counter += 1
         if arr[j] <= pivot:
-            # If element smaller than pivot is found
-            # swap it with the greater element pointed by i
             i = i + 1
+            arr[i], arr[j] = arr[j], arr[i]
 
-            # Swapping element at i with element at j
-            (arr[i], arr[j]) = (arr[j], arr[i])
-
-    # Swap the pivot element with the greater element specified by i
-    (arr[i + 1], arr[high]) = (arr[high], arr[i + 1])
-
-    # Return the position from where partition is done
-    return i + 1
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1, comparison_counter
 
 
 def quick_sort(arr, low, high):
@@ -117,16 +104,11 @@ def quick_sort(arr, low, high):
     timer_start = time.perf_counter_ns()
     n = len(arr)
     if low < high:
-        # Find pivot element such that
-        # element smaller than pivot are on the left
-        # element greater than pivot are on the right
-        pi = quick_sort_partition(arr, low, high)
+        pi, comparison_counter = quick_sort_partition(arr, low, high)
 
-        # Recursive call on the left of pivot
-        quick_sort(arr, low, pi - 1)
+        comparison_counter += quick_sort(arr, low, pi - 1)[1]
 
-        # Recursive call on the right of pivot
-        quick_sort(arr, pi + 1, high)
+        comparison_counter += quick_sort(arr, pi + 1, high)[1]
     timer_end = time.perf_counter_ns()
     return "Quick Sort", n, comparison_counter, copy_counter, (timer_end - timer_start) / 1000000
 
@@ -259,8 +241,11 @@ def bi_directional_bubble_sort(arr):
     comparison_counter = copy_counter = 0
     timer_start = time.perf_counter_ns()
     n = len(arr)
+
     array_sorted = False
     while not array_sorted:
+
+        # Left to right sort
         array_sorted = True
         for i in (range(n - 1)):
             comparison_counter += 1
@@ -271,6 +256,7 @@ def bi_directional_bubble_sort(arr):
         if array_sorted:
             break
 
+        # Right to left sort
         array_sorted = True
         for i in reversed(range(n - 1)):
             comparison_counter += 1
@@ -408,21 +394,40 @@ def table_formatter(column_headers, test_data):
         print(format_row.format(*row))
 
 
+""" Prompts the user to enter a valid input, i.e. an integer between 0 and the highest numbered choice
+featured within the numbered choice menu (provided as an argument)
+"""
+def take_only_valid_input(max_value):
+    while True:
+        user_input = input("Enter choice: ")
+        if user_input.isdigit():
+            user_input = int(user_input)
+            if 0 < user_input < max_value:
+                return user_input
+        print("ERROR: Enter a valid integer between 1 and", max_value - 1)
+        print()
+
+
 def main():
     while True:
         print("1. Test an individual sorting algorithm\n2. Test multiple sorting algorithms\n"
               "3. Generate Table 2\n4. Generate Table 3\n5. Exit")
         print()
-        user_choice = int(input("Enter choice: "))
+        user_choice = take_only_valid_input(6)
+        print()
 
         if user_choice == 1:
             print("1. Selection Sort\n2. Insertion Sort\n3. Merge Sort\n4. Quick Sort\n5. Heap Sort\n"
                   "6. Bubble Sort\n7. Obs1 Bubble Sort\n8. Obs2 Bubble Sort\n9. Obs3 Bubble Sort\n"
                   "10. Sink-Down Sort\n11. Bi-Directional Sort")
             print()
-            algo_choice = int(input("Enter choice: "))
-            array_size = int(input("Enter an array size: "))
+            algo_choice = take_only_valid_input(12)
+            print()
+            print("Enter an array size: ")
+            array_size = take_only_valid_input(10000)
+            print()
             array = generate_random_integer_set(array_size)
+            print()
             print_single_algorithm_test_results(test_single_algorithm(algo_choice, array))
             print()
         elif user_choice == 2:
